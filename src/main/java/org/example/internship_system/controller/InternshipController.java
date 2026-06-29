@@ -1,4 +1,4 @@
 package org.example.internship_system.controller;
 
-public class IntershipController {
+public class InternshipController {
 }
