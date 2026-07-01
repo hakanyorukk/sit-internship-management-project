@@ -104,39 +104,6 @@ controller/  →  service/  →  repository/  →  entity/
 Business logic lives in the **service** layer. Controllers only receive requests,
 validate input, call services, and return responses.
 
-### Directory Structure
-
-sit-internship-management-team-XX/
-│
-├── src/
-│ └── main/
-│ ├── java/
-│ │ └── com/tu/varna/internship/
-│ │ ├── config/ # Security, CORS, Swagger configuration
-│ │ ├── controller/ # REST API endpoints (request/response handling)
-│ │ ├── service/ # Business logic layer
-│ │ ├── repository/ # JPA repositories (data access layer)
-│ │ ├── entity/ # Database entities (JPA models)
-│ │ ├── dto/ # Data Transfer Objects (API contracts)
-│ │ ├── mapper/ # Entity ↔ DTO mapping
-│ │ ├── exception/ # Custom exceptions & global handlers
-│ │ └── util/ # Helper classes & utilities
-│ └── resources/
-│ ├── application.properties # Default configuration
-│ └── application-local.properties # Local config (gitignored)
-│
-├── frontend/ # React application (separate project)
-│ ├── src/
-│ ├── public/
-│ └── package.json
-│
-├── docs/ # Documentation
-│ ├── Internship_Project_Brief.pdf
-│ └── ARCHITECTURE.md
-│
-├── CONTRIBUTIONS.md # Individual contributions
-└── README.md # This file
-
 ### Layer Descriptions
 
 | Layer | Package | Purpose |
