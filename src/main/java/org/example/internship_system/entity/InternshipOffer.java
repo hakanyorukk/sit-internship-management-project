@@ -37,7 +37,7 @@ public class InternshipOffer {
     @JoinColumn(name = "company_id")
     private Company company;
 
-    // Default constructor (required by JPA)
+
     public InternshipOffer() {}
 
     public Long getId() {
