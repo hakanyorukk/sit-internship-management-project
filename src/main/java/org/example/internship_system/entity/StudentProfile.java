@@ -21,7 +21,7 @@ public class StudentProfile {
     @Column(length = 1000)
     private String skills;
 
-    // Default constructor (required by JPA)
+
     public StudentProfile() {}
 
     public Long getId() {

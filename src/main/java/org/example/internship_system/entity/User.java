@@ -26,7 +26,7 @@ public class User {
 
     private LocalDateTime createdAt;
 
-    // Default constructor (required by JPA)
+
     public User() {}
 
     public Long getId() {

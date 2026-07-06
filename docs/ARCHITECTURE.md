@@ -207,10 +207,10 @@ public class CompanyResponse {
 
 ### ④ Service — `service/CompanyService.java`
 The business logic. Converts DTO ↔ Entity and calls the repository.
+
 ```java
 package org.example.internship_system.service;
 
-import org.example.internship_system.repository.CompanyRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -232,10 +232,10 @@ public class CompanyService {
 
 ### ⑤ Controller — `controller/CompanyController.java`
 Maps URLs to service methods.
+
 ```java
 package org.example.internship_system.controller;
 
-import org.example.internship_system.service.CompanyService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

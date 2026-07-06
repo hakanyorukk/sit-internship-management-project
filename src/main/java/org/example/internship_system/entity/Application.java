@@ -32,7 +32,7 @@ public class Application {
     @Column(length = 1000)
     private String comment;
 
-    // Default constructor (required by JPA)
+
     public Application() {}
 
     public Long getId() {

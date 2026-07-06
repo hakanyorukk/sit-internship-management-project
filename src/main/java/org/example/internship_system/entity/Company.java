@@ -24,7 +24,7 @@ public class Company {
     private String contactEmail;
     private String city;
 
-    // Default constructor (required by JPA)
+
     public Company() {}
 
     public Long getId() {
