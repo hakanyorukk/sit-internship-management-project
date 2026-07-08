@@ -1,7 +1,9 @@
 package org.example.internship_system.controller;
 
 import org.example.internship_system.dtos.request.InternshipOfferRequest;
+import org.example.internship_system.dtos.response.ApplicationResponse;
 import org.example.internship_system.dtos.response.InternshipOfferResponse;
+import org.example.internship_system.service.ApplicationService;
 import org.example.internship_system.service.InternshipOfferService;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,9 +14,12 @@ import java.util.List;
 public class InternshipController {
 
     private final InternshipOfferService internshipOfferService;
+    private final ApplicationService applicationService;
 
-    public InternshipController(InternshipOfferService internshipOfferService) {
+    public InternshipController(InternshipOfferService internshipOfferService,
+                                ApplicationService applicationService) {
         this.internshipOfferService = internshipOfferService;
+        this.applicationService = applicationService;
     }
 
     @PostMapping
@@ -33,6 +38,12 @@ public class InternshipController {
     @GetMapping("/{id}")
     public InternshipOfferResponse getById(@PathVariable Long id) {
         return internshipOfferService.getById(id);
+    }
+
+
+    @GetMapping("/{id}/applications")
+    public List<ApplicationResponse> getApplications(@PathVariable Long id) {
+        return applicationService.getByOffer(id);
     }
 
     @PutMapping("/{id}")
