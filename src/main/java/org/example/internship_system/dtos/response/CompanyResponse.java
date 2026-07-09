@@ -11,6 +11,13 @@ public class CompanyResponse {
 
     }
 
+    public String getContactEmail() {
+        return contactEmail;
+    }
+    public void setContactEmail(String contactEmail) {
+        this.contactEmail = contactEmail;
+    }
+
 
     public String getName() {
         return name;
@@ -19,6 +26,7 @@ public class CompanyResponse {
         this.name = name;
     }
 
+
     public String getDescription() {
         return description;
     }
@@ -26,8 +34,8 @@ public class CompanyResponse {
         this.description = description;
     }
 
-
     public String getWebsite() {
+
         return website;
     }
     public void setWebsite(String website) {
@@ -35,17 +43,11 @@ public class CompanyResponse {
     }
 
     public String getCity() {
+
         return city;
     }
     public void setCity(String city) {
         this.city = city;
-    }
-
-    public String getContactEmail() {
-        return contactEmail;
-    }
-    public void setContactEmail(String contactEmail) {
-        this.contactEmail = contactEmail;
     }
 
 }
