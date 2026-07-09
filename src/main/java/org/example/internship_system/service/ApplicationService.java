@@ -9,6 +9,7 @@ import org.example.internship_system.entity.StudentProfile;
 import org.example.internship_system.entity.enums.ApplicationStatus;
 import org.example.internship_system.entity.enums.OfferStatus;
 import org.example.internship_system.exception.ResourceNotFoundException;
+import org.example.internship_system.mapper.ApplicationMapper;
 import org.example.internship_system.repository.ApplicationRepository;
 import org.example.internship_system.repository.InternshipOfferRepository;
 import org.example.internship_system.repository.StudentProfileRepository;
@@ -24,13 +25,16 @@ public class ApplicationService {
     private final ApplicationRepository applicationRepository;
     private final StudentProfileRepository studentProfileRepository;
     private final InternshipOfferRepository internshipOfferRepository;
+    private final ApplicationMapper applicationMapper;
 
     public ApplicationService(ApplicationRepository applicationRepository,
                               StudentProfileRepository studentProfileRepository,
-                              InternshipOfferRepository internshipOfferRepository) {
+                              InternshipOfferRepository internshipOfferRepository,
+                              ApplicationMapper applicationMapper) {
         this.applicationRepository = applicationRepository;
         this.studentProfileRepository = studentProfileRepository;
         this.internshipOfferRepository = internshipOfferRepository;
+        this.applicationMapper = applicationMapper;
     }
 
     public ApplicationResponse create(ApplicationRequest request) {
@@ -112,20 +116,6 @@ public class ApplicationService {
     }
 
     private ApplicationResponse toResponse(Application application) {
-        ApplicationResponse response = new ApplicationResponse();
-        response.setId(application.getId());
-        response.setApplicationDate(application.getApplicationDate());
-        response.setMotivationLetter(application.getMotivationLetter());
-        response.setStatus(application.getStatus());
-        response.setComment(application.getComment());
-        if (application.getStudent() != null) {
-            response.setStudentId(application.getStudent().getId());
-            response.setStudentFacultyNumber(application.getStudent().getFacultyNumber());
-        }
-        if (application.getInternshipOffer() != null) {
-            response.setInternshipOfferId(application.getInternshipOffer().getId());
-            response.setInternshipOfferTitle(application.getInternshipOffer().getTitle());
-        }
-        return response;
+        return applicationMapper.toDto(application);
     }
 }
