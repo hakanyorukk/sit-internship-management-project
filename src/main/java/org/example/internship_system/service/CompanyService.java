@@ -3,6 +3,7 @@ package org.example.internship_system.service;
 import org.example.internship_system.dtos.request.CompanyRequest;
 import org.example.internship_system.dtos.response.CompanyResponse;
 import org.example.internship_system.entity.Company;
+import org.example.internship_system.mapper.CompanyMapper;
 import org.example.internship_system.repository.CompanyRepository;
 import org.example.internship_system.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -16,10 +17,13 @@ public class CompanyService {
 
     private final CompanyRepository companyRepository;
     private final UserRepository userRepository;
+    private final CompanyMapper companyMapper;
 
-    public CompanyService(CompanyRepository companyRepository, UserRepository userRepository) {
+    public CompanyService(CompanyRepository companyRepository, UserRepository userRepository,
+                          CompanyMapper companyMapper) {
         this.companyRepository = companyRepository;
         this.userRepository = userRepository;
+        this.companyMapper = companyMapper;
     }
 
     @Transactional
@@ -32,11 +36,7 @@ public class CompanyService {
             throw new RuntimeException("Company with email '" + request.getContactEmail() + "' already exists");
         }
 
-        Company company = new Company();
-        company.setName(request.getName());
-        company.setDescription(request.getDescription());
-        company.setCity(request.getCity());
-        company.setContactEmail(request.getContactEmail());
+        Company company = companyMapper.toEntity(request);
 
         Company savedCompany = companyRepository.save(company);
         return convertToResponse(savedCompany);
@@ -105,12 +105,6 @@ public class CompanyService {
     }
 
     private CompanyResponse convertToResponse(Company company) {
-        CompanyResponse response = new CompanyResponse();
-        response.setName(company.getName());
-        response.setDescription(company.getDescription());
-        response.setWebsite(company.getWebsite());
-        response.setCity(company.getCity());
-        response.setContactEmail(company.getContactEmail());
-        return response;
+        return companyMapper.toDto(company);
     }
 }

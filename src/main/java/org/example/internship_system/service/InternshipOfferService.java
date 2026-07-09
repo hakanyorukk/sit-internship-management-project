@@ -6,6 +6,7 @@ import org.example.internship_system.entity.Company;
 import org.example.internship_system.entity.InternshipOffer;
 import org.example.internship_system.entity.enums.OfferStatus;
 import org.example.internship_system.exception.ResourceNotFoundException;
+import org.example.internship_system.mapper.InternshipOfferMapper;
 import org.example.internship_system.repository.CompanyRepository;
 import org.example.internship_system.repository.InternshipOfferRepository;
 import org.springframework.stereotype.Service;
@@ -18,11 +19,14 @@ public class InternshipOfferService {
 
     private final InternshipOfferRepository internshipOfferRepository;
     private final CompanyRepository companyRepository;
+    private final InternshipOfferMapper internshipOfferMapper;
 
     public InternshipOfferService(InternshipOfferRepository internshipOfferRepository,
-                                  CompanyRepository companyRepository) {
+                                  CompanyRepository companyRepository,
+                                  InternshipOfferMapper internshipOfferMapper) {
         this.internshipOfferRepository = internshipOfferRepository;
         this.companyRepository = companyRepository;
+        this.internshipOfferMapper = internshipOfferMapper;
     }
 
     public InternshipOfferResponse create(InternshipOfferRequest request) {
@@ -30,13 +34,7 @@ public class InternshipOfferService {
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Company not found: " + request.getCompanyId()));
 
-        InternshipOffer offer = new InternshipOffer();
-        offer.setTitle(request.getTitle());
-        offer.setDescription(request.getDescription());
-        offer.setRequiredSkills(request.getRequiredSkills());
-        offer.setLocation(request.getLocation());
-        offer.setType(request.getType());
-        offer.setDeadline(request.getDeadline());
+        InternshipOffer offer = internshipOfferMapper.toEntity(request);
         offer.setStatus(OfferStatus.ACTIVE);
         offer.setCompany(company);
 
@@ -75,6 +73,8 @@ public class InternshipOfferService {
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Internship offer not found: " + id));
 
+        // Only the editable fields are overwritten. company and status are left as
+        // they are, so an update cannot break the company relation or reset the status.
         offer.setTitle(request.getTitle());
         offer.setDescription(request.getDescription());
         offer.setRequiredSkills(request.getRequiredSkills());
@@ -94,19 +94,6 @@ public class InternshipOfferService {
     }
 
     private InternshipOfferResponse toResponse(InternshipOffer offer) {
-        InternshipOfferResponse response = new InternshipOfferResponse();
-        response.setId(offer.getId());
-        response.setTitle(offer.getTitle());
-        response.setDescription(offer.getDescription());
-        response.setRequiredSkills(offer.getRequiredSkills());
-        response.setLocation(offer.getLocation());
-        response.setType(offer.getType());
-        response.setDeadline(offer.getDeadline());
-        response.setStatus(offer.getStatus());
-        if (offer.getCompany() != null) {
-            response.setCompanyId(offer.getCompany().getId());
-            response.setCompanyName(offer.getCompany().getName());
-        }
-        return response;
+        return internshipOfferMapper.toDto(offer);
     }
 }
