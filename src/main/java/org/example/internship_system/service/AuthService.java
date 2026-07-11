@@ -1,8 +1,13 @@
 package org.example.internship_system.service;
 
+import org.example.internship_system.dtos.request.LoginRequest;
 import org.example.internship_system.dtos.request.RegisterRequest;
 import org.example.internship_system.entity.User;
 import org.example.internship_system.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +18,12 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtService jwtService;
+
+    @Autowired
+    AuthenticationManager authManager;
 
     public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -33,5 +44,15 @@ public class AuthService {
         user.setCreatedAt(LocalDateTime.now());
 
         return userRepository.save(user);
+    }
+
+    public String verify(LoginRequest request) {
+        Authentication authentication =
+                authManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+
+        if(authentication.isAuthenticated()) {
+            return jwtService.generateToken(request.getEmail());
+        }
+        return "fail";
     }
 }
