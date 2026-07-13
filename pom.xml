@@ -28,7 +28,6 @@
             <artifactId>spring-boot-starter-webmvc</artifactId>
         </dependency>
 
-
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
@@ -49,7 +48,6 @@
             <version>0.13.0</version>
             <scope>runtime</scope>
         </dependency>
-
         <!-- Source: https://mvnrepository.com/artifact/org.modelmapper/modelmapper -->
         <dependency>
             <groupId>org.modelmapper</groupId>

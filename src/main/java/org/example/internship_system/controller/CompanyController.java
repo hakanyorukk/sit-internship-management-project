@@ -3,6 +3,7 @@ package org.example.internship_system.controller;
 import org.example.internship_system.dtos.request.CompanyRequest;
 import org.example.internship_system.dtos.response.CompanyResponse;
 import org.example.internship_system.service.CompanyService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class CompanyController {
     }
 
     @PostMapping
-    public ResponseEntity<CompanyResponse> createCompany(@RequestBody CompanyRequest request) {
+    public ResponseEntity<CompanyResponse> createCompany(@Valid @RequestBody CompanyRequest request) {
         CompanyResponse response = companyService.createCompany(request);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
@@ -59,7 +60,7 @@ public class CompanyController {
     @PutMapping("/{id}")
     public ResponseEntity<CompanyResponse> updateCompany(
             @PathVariable Long id,
-            @RequestBody CompanyRequest request) {
+            @Valid @RequestBody CompanyRequest request) {
         CompanyResponse response = companyService.updateCompany(id, request);
         return ResponseEntity.ok(response);
     }
