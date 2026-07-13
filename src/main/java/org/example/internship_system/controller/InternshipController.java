@@ -5,6 +5,7 @@ import org.example.internship_system.dtos.response.ApplicationResponse;
 import org.example.internship_system.dtos.response.InternshipOfferResponse;
 import org.example.internship_system.service.ApplicationService;
 import org.example.internship_system.service.InternshipOfferService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class InternshipController {
     }
 
     @PostMapping
-    public InternshipOfferResponse create(@RequestBody InternshipOfferRequest request) {
+    public InternshipOfferResponse create(@Valid @RequestBody InternshipOfferRequest request) {
         return internshipOfferService.create(request);
     }
 
@@ -48,7 +49,7 @@ public class InternshipController {
 
     @PutMapping("/{id}")
     public InternshipOfferResponse update(@PathVariable Long id,
-                                          @RequestBody InternshipOfferRequest request) {
+                                          @Valid @RequestBody InternshipOfferRequest request) {
         return internshipOfferService.update(id, request);
     }
 

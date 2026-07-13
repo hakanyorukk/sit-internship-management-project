@@ -1,5 +1,6 @@
 package org.example.internship_system.controller;
 
+import org.example.internship_system.dtos.request.LoginRequest;
 import org.example.internship_system.dtos.request.RegisterRequest;
 import org.example.internship_system.service.AuthService;
 import org.springframework.http.HttpStatus;
@@ -20,5 +21,11 @@ public class AuthController {
     public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
         authService.register(request);
         return ResponseEntity.status(HttpStatus.CREATED).body("User registered");
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginRequest request) {
+        String token = authService.verify(request); // capture token
+        return ResponseEntity.ok(token);
     }
 }

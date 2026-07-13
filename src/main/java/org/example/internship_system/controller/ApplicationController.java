@@ -4,6 +4,7 @@ import org.example.internship_system.dtos.request.ApplicationRequest;
 import org.example.internship_system.dtos.request.ApplicationStatusRequest;
 import org.example.internship_system.dtos.response.ApplicationResponse;
 import org.example.internship_system.service.ApplicationService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class ApplicationController {
     }
 
     @PostMapping
-    public ApplicationResponse create(@RequestBody ApplicationRequest request) {
+    public ApplicationResponse create(@Valid @RequestBody ApplicationRequest request) {
         return applicationService.create(request);
     }
 
@@ -40,7 +41,7 @@ public class ApplicationController {
 
     @PatchMapping("/{id}/status")
     public ApplicationResponse updateStatus(@PathVariable Long id,
-                                            @RequestBody ApplicationStatusRequest request) {
+                                            @Valid @RequestBody ApplicationStatusRequest request) {
         return applicationService.updateStatus(id, request);
     }
 }
