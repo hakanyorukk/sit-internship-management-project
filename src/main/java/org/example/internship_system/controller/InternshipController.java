@@ -41,7 +41,6 @@ public class InternshipController {
         return internshipOfferService.getById(id);
     }
 
-
     @GetMapping("/{id}/applications")
     public List<ApplicationResponse> getApplications(@PathVariable Long id) {
         return applicationService.getByOffer(id);
@@ -57,4 +56,10 @@ public class InternshipController {
     public void delete(@PathVariable Long id) {
         internshipOfferService.delete(id);
     }
+
+    @GetMapping("/my")
+    public List<InternshipOfferResponse> getMyOffers() {
+        return internshipOfferService.getMyOffers();
+    }
+
 }
