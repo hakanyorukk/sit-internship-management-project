@@ -3,6 +3,7 @@ package org.example.internship_system.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -36,6 +37,18 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**", "/api/enums/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/companies").hasRole("COMPANY")
+                        .requestMatchers(HttpMethod.POST, "/api/internships").hasRole("COMPANY")
+                        .requestMatchers(HttpMethod.GET, "/api/internships/my").hasRole("COMPANY")
+                        .requestMatchers(HttpMethod.DELETE, "/api/internships/{id}").hasRole("COMPANY")
+                        .requestMatchers(HttpMethod.PUT, "/api/internships/{id}").hasRole("COMPANY")
+                        .requestMatchers(HttpMethod.GET, "/api/internships/{id}/applications").hasRole("COMPANY")
+                        .requestMatchers(HttpMethod.GET, "/api/applications").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/applications").hasRole("STUDENT")
+                        .requestMatchers(HttpMethod.GET, "/api/applications/my").hasRole("STUDENT")
+                        .requestMatchers(HttpMethod.PATCH, "/api/applications/{id}/status").hasRole("COMPANY")
+                        .requestMatchers(HttpMethod.PUT, "/api/companies/{id}").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/companies/{id}").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

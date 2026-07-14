@@ -50,8 +50,10 @@ public class AuthService {
         Authentication authentication =
                 authManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
+
         if(authentication.isAuthenticated()) {
-            return jwtService.generateToken(request.getEmail());
+            User user = userRepository.findByEmail(request.getEmail());
+            return jwtService.generateToken(request.getEmail(), user.getRole().name());
         }
         return "fail";
     }

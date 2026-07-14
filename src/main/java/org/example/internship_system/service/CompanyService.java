@@ -3,9 +3,11 @@ package org.example.internship_system.service;
 import org.example.internship_system.dtos.request.CompanyRequest;
 import org.example.internship_system.dtos.response.CompanyResponse;
 import org.example.internship_system.entity.Company;
+import org.example.internship_system.entity.User;
 import org.example.internship_system.mapper.CompanyMapper;
 import org.example.internship_system.repository.CompanyRepository;
 import org.example.internship_system.repository.UserRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +30,8 @@ public class CompanyService {
 
     @Transactional
     public CompanyResponse createCompany(CompanyRequest request) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName(); // who's logged in
+        User user = userRepository.findByEmail(email);
         if (companyRepository.existsByName(request.getName())) {
             throw new RuntimeException("Company with name '" + request.getName() + "' already exists");
         }
@@ -37,6 +41,7 @@ public class CompanyService {
         }
 
         Company company = companyMapper.toEntity(request);
+        company.setUser(user);
 
         Company savedCompany = companyRepository.save(company);
         return convertToResponse(savedCompany);

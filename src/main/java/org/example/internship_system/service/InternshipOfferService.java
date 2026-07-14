@@ -9,6 +9,8 @@ import org.example.internship_system.exception.ResourceNotFoundException;
 import org.example.internship_system.mapper.InternshipOfferMapper;
 import org.example.internship_system.repository.CompanyRepository;
 import org.example.internship_system.repository.InternshipOfferRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -30,9 +32,10 @@ public class InternshipOfferService {
     }
 
     public InternshipOfferResponse create(InternshipOfferRequest request) {
-        Company company = companyRepository.findById(request.getCompanyId())
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Company not found: " + request.getCompanyId()));
+        // A company can only post offers under its OWN company, derived from the
+        // logged-in user (the JWT) — not from a companyId in the request body.
+        // Otherwise one company could create offers under another company's id.
+        Company company = currentCompany();
 
         InternshipOffer offer = internshipOfferMapper.toEntity(request);
         offer.setStatus(OfferStatus.ACTIVE);
@@ -68,10 +71,38 @@ public class InternshipOfferService {
         return result;
     }
 
-    public InternshipOfferResponse update(Long id, InternshipOfferRequest request) {
+    private Company currentCompany() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        return companyRepository.findByUserEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("No company for user: " + email));
+    }
+
+    public List<InternshipOfferResponse> getMyOffers() {
+        Company company = currentCompany();
+        List<InternshipOfferResponse> result = new ArrayList<>();
+        for (InternshipOffer offer : internshipOfferRepository.findByCompany(company)) {
+            result.add(toResponse(offer));
+        }
+        return result;
+    }
+
+    private void checkOwnership(InternshipOffer offer)  {
+        Company company = currentCompany();
+        if (!offer.getCompany().getId().equals(company.getId())) {
+            throw new AccessDeniedException("You can only manage your own offers");
+        }
+    }
+    public void delete(Long id)  {
         InternshipOffer offer = internshipOfferRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Internship offer not found: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Internship offer not found: " + id));
+        checkOwnership(offer);
+        internshipOfferRepository.delete(offer);
+    }
+
+    public InternshipOfferResponse update(Long id, InternshipOfferRequest request)  {
+        InternshipOffer offer = internshipOfferRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Internship offer not found: " + id));
+        checkOwnership(offer);
 
         // Only the editable fields are overwritten. company and status are left as
         // they are, so an update cannot break the company relation or reset the status.
@@ -84,13 +115,6 @@ public class InternshipOfferService {
 
         InternshipOffer saved = internshipOfferRepository.save(offer);
         return toResponse(saved);
-    }
-
-    public void delete(Long id) {
-        if (!internshipOfferRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Internship offer not found: " + id);
-        }
-        internshipOfferRepository.deleteById(id);
     }
 
     private InternshipOfferResponse toResponse(InternshipOffer offer) {
