@@ -1,9 +1,11 @@
 package org.example.internship_system.dtos.request;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 public class CompanyRequest {
 
     @NotBlank(message = "Name is required")
@@ -12,6 +14,17 @@ public class CompanyRequest {
 
     @Size(max = 2000, message = "Description must be at most 2000 characters")
     private String description;
+
+    @NotNull(message = "User id is required")
+    private Long id;
+
+    @NotBlank(message = "Website is required")
+    @Size(min = 3, max = 255, message = "Website must be between 3 and 255 characters")
+    @Pattern(
+            regexp = "^(www\\.)?[a-zA-Z0-9\\-]+\\.([a-zA-Z]{2,})(\\.[a-zA-Z]{2,})?$",
+            message = "Website must be a valid domain name"
+    )
+    private String website;
 
     @NotBlank(message = "City is required")
     private String city;
@@ -22,35 +35,6 @@ public class CompanyRequest {
 
     public CompanyRequest(){
 
-    }
-
-    public String getName(){
-        return name;
-    }
-    public void setName(String name){
-       this.name = name;
-    }
-
-    public String getCity() {
-        return city;
-    }
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getDescription(){
-        return description;
-    }
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getContactEmail() {
-        return contactEmail;
-    }
-
-    public void setContactEmail(String contactEmail) {
-        this.contactEmail = contactEmail;
     }
 
 }

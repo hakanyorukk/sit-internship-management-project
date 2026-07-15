@@ -1,6 +1,7 @@
 package org.example.internship_system.dtos.response;
 
 public class CompanyResponse {
+    private Long id;
     private String name;
     private String description;
     private String website;
@@ -48,6 +49,11 @@ public class CompanyResponse {
     }
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public Long getId(){return id;}
+    public void setId(){
+        this.id = id;
     }
 
 }
