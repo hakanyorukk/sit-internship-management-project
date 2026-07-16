@@ -1,7 +1,7 @@
 package org.example.internship_system.entity;
 
 import jakarta.persistence.*;
-
+import org.example.internship_system.entity.enums.CompanyRegistration;
 @Entity
 @Table(name = "companies")
 public class Company {
@@ -24,6 +24,9 @@ public class Company {
     private String contactEmail;
     private String city;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private CompanyRegistration registrationStatus = CompanyRegistration.PENDING;
 
     public Company() {}
 
@@ -81,5 +84,13 @@ public class Company {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public CompanyRegistration getRegistrationStatus() {
+        return registrationStatus;
+    }
+
+    public void setRegistrationStatus(CompanyRegistration registrationStatus) {
+        this.registrationStatus = registrationStatus;
     }
 }

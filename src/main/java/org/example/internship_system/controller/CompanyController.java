@@ -7,7 +7,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import org.example.internship_system.entity.enums.CompanyRegistration;
 import java.util.List;
 
 @RestController
@@ -19,6 +19,15 @@ public class CompanyController {
 
     public CompanyController(CompanyService companyService) {
         this.companyService = companyService;
+    }
+
+
+    @PatchMapping("/{id}/registration")
+    public ResponseEntity<CompanyResponse> updateRegistrationStatus(
+            @PathVariable Long id,
+            @RequestParam CompanyRegistration status) {
+        CompanyResponse response = companyService.updateRegistrationStatus(id, status);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping

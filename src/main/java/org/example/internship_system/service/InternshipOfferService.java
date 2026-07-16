@@ -13,6 +13,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
+import org.example.internship_system.entity.enums.CompanyRegistration;
+import org.example.internship_system.exception.InvalidOperationException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,10 +35,13 @@ public class InternshipOfferService {
     }
 
     public InternshipOfferResponse create(InternshipOfferRequest request) {
-        // A company can only post offers under its OWN company, derived from the
-        // logged-in user (the JWT) — not from a companyId in the request body.
-        // Otherwise one company could create offers under another company's id.
+
         Company company = currentCompany();
+
+        if (company.getRegistrationStatus() != CompanyRegistration.ACCEPTED) {
+            throw new InvalidOperationException(
+                    "Your company must be approved by an admin before posting offers");
+        }
 
         InternshipOffer offer = internshipOfferMapper.toEntity(request);
         offer.setStatus(OfferStatus.ACTIVE);
