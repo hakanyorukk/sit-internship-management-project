@@ -25,6 +25,21 @@ public class RegisterRequest {
     @NotNull(message = "Role is required")
     private Role role;
 
+    // Optional student fields — only used when role == STUDENT. The registration
+    // form can send them in the same request so the profile is filled in one step;
+    // if they are missing, an empty profile is created and filled later via
+    // PUT /api/students/me.
+    @Size(max = 50, message = "Faculty number must be at most 50 characters")
+    private String facultyNumber;
+
+    @Size(max = 255, message = "Specialty must be at most 255 characters")
+    private String specialty;
+
+    private Integer course;
+
+    @Size(max = 1000, message = "Skills must be at most 1000 characters")
+    private String skills;
+
     public RegisterRequest() {}
 
     public String getFirstName() {
@@ -65,5 +80,37 @@ public class RegisterRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getFacultyNumber() {
+        return facultyNumber;
+    }
+
+    public void setFacultyNumber(String facultyNumber) {
+        this.facultyNumber = facultyNumber;
+    }
+
+    public String getSpecialty() {
+        return specialty;
+    }
+
+    public void setSpecialty(String specialty) {
+        this.specialty = specialty;
+    }
+
+    public Integer getCourse() {
+        return course;
+    }
+
+    public void setCourse(Integer course) {
+        this.course = course;
+    }
+
+    public String getSkills() {
+        return skills;
+    }
+
+    public void setSkills(String skills) {
+        this.skills = skills;
     }
 }
