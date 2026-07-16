@@ -49,6 +49,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PATCH, "/api/applications/{id}/status").hasRole("COMPANY")
                         .requestMatchers(HttpMethod.PUT, "/api/companies/{id}").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/companies/{id}").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/companies/{id}").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/api/companies/{id}/registration").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

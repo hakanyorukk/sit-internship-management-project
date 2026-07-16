@@ -10,7 +10,7 @@ import org.example.internship_system.repository.UserRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import org.example.internship_system.entity.enums.CompanyRegistration;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -99,6 +99,15 @@ public class CompanyService {
 
         Company updatedCompany = companyRepository.save(company);
         return convertToResponse(updatedCompany);
+    }
+
+    @Transactional
+    public CompanyResponse updateRegistrationStatus(Long id, CompanyRegistration status) {
+        Company company = companyRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Company not found with id: " + id));
+        company.setRegistrationStatus(status);
+        Company savedCompany = companyRepository.save(company);
+        return convertToResponse(savedCompany);
     }
 
     @Transactional

@@ -1,11 +1,12 @@
 package org.example.internship_system.dtos.response;
-
+import org.example.internship_system.entity.enums.CompanyRegistration;
 public class CompanyResponse {
     private String name;
     private String description;
     private String website;
     private String city;
     private String contactEmail;
+    private CompanyRegistration registrationStatus;
 
     public CompanyResponse(){
 
@@ -48,6 +49,13 @@ public class CompanyResponse {
     }
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public CompanyRegistration getRegistrationStatus() {
+        return registrationStatus;
+    }
+    public void setRegistrationStatus(CompanyRegistration registrationStatus) {
+        this.registrationStatus = registrationStatus;
     }
 
 }
