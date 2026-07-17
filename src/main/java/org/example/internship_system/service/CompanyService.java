@@ -30,7 +30,7 @@ public class CompanyService {
 
     @Transactional
     public CompanyResponse createCompany(CompanyRequest request) {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName(); // who's logged in
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByEmail(email);
         if (companyRepository.existsByName(request.getName())) {
             throw new RuntimeException("Company with name '" + request.getName() + "' already exists");
