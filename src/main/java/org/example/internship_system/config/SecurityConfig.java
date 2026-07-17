@@ -37,6 +37,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**", "/api/enums/**").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/companies").hasRole("COMPANY")
                         .requestMatchers(HttpMethod.POST, "/api/internships").hasRole("COMPANY")
                         .requestMatchers(HttpMethod.GET, "/api/internships/my").hasRole("COMPANY")
@@ -49,6 +50,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PATCH, "/api/applications/{id}/status").hasRole("COMPANY")
                         .requestMatchers(HttpMethod.PUT, "/api/companies/{id}").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/companies/{id}").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/companies/{id}").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/api/companies/{id}/registration").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

@@ -28,6 +28,9 @@ public class Company {
     private String contactEmail;
     private String city;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private CompanyRegistration registrationStatus = CompanyRegistration.PENDING;
 
     public Company() {}
 

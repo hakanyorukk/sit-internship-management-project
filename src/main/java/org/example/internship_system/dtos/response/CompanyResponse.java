@@ -12,9 +12,9 @@ public class CompanyResponse {
     private String website;
     private String city;
     private String contactEmail;
+    private CompanyRegistration registrationStatus;
 
     public CompanyResponse(){
-
     }
 
 }
