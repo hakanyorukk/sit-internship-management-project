@@ -6,8 +6,8 @@ import jakarta.validation.constraints.Size;
 
 public class ApplicationRequest {
 
-    @NotNull(message = "Student id is required")
-    private Long studentId;
+    // No studentId here on purpose: the applying student is always derived from
+    // the JWT on the server side, so nobody can apply in someone else's name.
 
     @NotNull(message = "Internship offer id is required")
     private Long internshipOfferId;
@@ -18,9 +18,6 @@ public class ApplicationRequest {
 
     public ApplicationRequest() {
     }
-
-    public Long getStudentId() { return studentId; }
-    public void setStudentId(Long studentId) { this.studentId = studentId; }
 
     public Long getInternshipOfferId() { return internshipOfferId; }
     public void setInternshipOfferId(Long internshipOfferId) { this.internshipOfferId = internshipOfferId; }

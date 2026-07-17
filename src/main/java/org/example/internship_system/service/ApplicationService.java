@@ -13,6 +13,7 @@ import org.example.internship_system.mapper.ApplicationMapper;
 import org.example.internship_system.repository.ApplicationRepository;
 import org.example.internship_system.repository.InternshipOfferRepository;
 import org.example.internship_system.repository.StudentProfileRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -37,10 +38,18 @@ public class ApplicationService {
         this.applicationMapper = applicationMapper;
     }
 
-    public ApplicationResponse create(ApplicationRequest request) {
-        StudentProfile student = studentProfileRepository.findById(request.getStudentId())
+    // The student profile of whoever is logged in. The profile is auto-created at
+    // registration, so this only fails for non-student accounts (or students
+    // registered before the auto-create change).
+    private StudentProfile currentStudent() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        return studentProfileRepository.findByUserEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        "Student profile not found: " + request.getStudentId()));
+                        "No student profile for user: " + email));
+    }
+
+    public ApplicationResponse create(ApplicationRequest request) {
+        StudentProfile student = currentStudent();
 
         InternshipOffer offer = internshipOfferRepository.findById(request.getInternshipOfferId())
                 .orElseThrow(() -> new ResourceNotFoundException(
@@ -80,10 +89,8 @@ public class ApplicationService {
         return toResponse(application);
     }
 
-    public List<ApplicationResponse> getByStudent(Long studentId) {
-        StudentProfile student = studentProfileRepository.findById(studentId)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Student profile not found: " + studentId));
+    public List<ApplicationResponse> getMyApplications() {
+        StudentProfile student = currentStudent();
         List<ApplicationResponse> result = new ArrayList<>();
         for (Application application : applicationRepository.findByStudent(student)) {
             result.add(toResponse(application));
