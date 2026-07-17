@@ -1,5 +1,6 @@
 package org.example.internship_system.dtos.response;
 
+import org.example.internship_system.entity.enums.CompanyRegistration;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
