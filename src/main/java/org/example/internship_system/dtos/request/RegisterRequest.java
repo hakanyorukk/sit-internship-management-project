@@ -31,4 +31,16 @@ public class RegisterRequest {
     @NotNull(message = "Role is required")
     private Role role;
 
+       @Size(max = 50, message = "Faculty number must be at most 50 characters")
+      private String facultyNumber;
+
+      @Size(max = 255, message = "Specialty must be at most 255 characters")
+      private String specialty;
+
+      private Integer course;
+
+      @Size(max = 1000, message = "Skills must be at most 1000 characters")
+      private String skills;
+
+
 }
