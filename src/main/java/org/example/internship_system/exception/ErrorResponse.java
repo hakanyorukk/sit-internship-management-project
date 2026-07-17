@@ -1,8 +1,15 @@
 package org.example.internship_system.exception;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class ErrorResponse extends RuntimeException {
     public ErrorResponse(String message) {
         super(message);
@@ -14,57 +21,6 @@ public class ErrorResponse extends RuntimeException {
     private String message;
     private String path;
     private List<String> details;
-
-    public ErrorResponse(){}
-
-    public LocalDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public String getError() {
-        return error;
-    }
-
-    @Override
-    public String getMessage() {
-        return message;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public List<String> getDetails() {
-        return details;
-    }
-
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public void setError(String error) {
-        this.error = error;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    public void setDetails(List<String> details) {
-        this.details = details;
-    }
 
     public ErrorResponse(LocalDateTime timestamp, int status, String error, String
                          message, String path){

@@ -2,10 +2,12 @@ package org.example.internship_system.dtos.request;
 
 import jakarta.validation.constraints.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter
 @Getter
+@NoArgsConstructor
 public class CompanyRequest {
 
     @NotBlank(message = "Name is required")
@@ -32,9 +34,5 @@ public class CompanyRequest {
     @NotBlank(message = "Contact email is required")
     @Email(message = "Contact email must be a valid email address")
     private String contactEmail;
-
-    public CompanyRequest(){
-
-    }
 
 }
