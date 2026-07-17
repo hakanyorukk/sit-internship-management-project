@@ -30,8 +30,8 @@ public class ApplicationController {
     }
 
     @GetMapping("/my")
-    public List<ApplicationResponse> getMy(@RequestParam Long studentId) {
-        return applicationService.getByStudent(studentId);
+    public List<ApplicationResponse> getMy() {
+        return applicationService.getMyApplications();
     }
 
     @GetMapping("/{id}")
